@@ -1,0 +1,20 @@
+﻿<div class="mb-3">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" disabled="@(AvailableProviders.Count() == 0)" role="button" data-bs-toggle="dropdown">
+            Add Payment Provider
+        </button>
+
+      <ul class="dropdown-menu">
+        @foreach (string provider in AvailableProviders)
+        {
+            <li><a class="dropdown-item" href="javascript:void(0)" @onclick="() => AddProviderAsync(provider)">@provider</a></li>
+        }        
+      </ul>
+    </div>
+</div>
+<div>
+    @foreach (MStorePaymentProvider provider in Store.Providers.OrderByDescending(x => x.CreateDate))
+    {
+        <PaymentProviderForm PaymentProvider="provider" OnDelete="DeleteProviderAsync" OnSave="SaveAsync" />
+    }
+</div>

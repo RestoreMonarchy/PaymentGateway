@@ -1,0 +1,46 @@
+﻿@using System.Net.Http;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using Microsoft.AspNetCore.Components.Forms;
+@using Microsoft.AspNetCore.Components.Routing;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web.Virtualization;
+@using Microsoft.JSInterop;
+
+<h4>Mock Payment</h4>
+<div class="d-flex align-items-center mb-3">
+    <div class="fw-bold">
+        ID:
+    </div>
+    <div class="ms-1">
+        @PaymentInfo.PublicId
+    </div>
+</div>
+<div>
+        
+</div>
+    
+@if (PaymentInfo.IsCompleted)
+{
+    <div class="alert alert-success" role="alert">
+        Thank you for purchase
+    </div>
+} else
+{
+    <div class="mt-2 d-flex align-items-center">
+        <div class="ms-auto">
+            @if (isLoading)
+            {
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
+            } else
+            {
+                <button class="btn btn-primary" @onclick="PayNow">
+                    Pay Now
+                </button>
+            }            
+        </div>            
+    </div>
+}

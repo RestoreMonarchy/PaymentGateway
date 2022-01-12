@@ -1,0 +1,91 @@
+﻿@using RestoreMonarchy.PaymentGateway.Web.Models.Database
+@{
+    MPayment payment = ViewData["Payment"] as MPayment;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="~/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restore Monarchy Payments</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/vendor/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/layouts/PaymentLayout.css" />
+
+    @if (!string.IsNullOrEmpty(payment.Store.BackgroundUrl))
+    {
+        <style>
+            body {
+                background-image: url(@payment.Store.BackgroundUrl);
+            }
+        </style>
+    }
+</head>
+<body>
+    <div id="app">
+        <div class="card ms-auto me-auto">
+            <div class="card-header">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <img src="@payment.Store.LogoUrl" style="max-width: 40px;max-height: 40px;" />
+                    </div>
+                    <div class="ms-2 fs-5">
+                        @payment.Store.Name
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                @RenderBody()
+
+                <div class="mb-1">
+                    <a class="show-collapse" data-bs-toggle="collapse" href="#orderSummaryCollapse" role="button">
+                        View Order Summary
+                    </a>
+                </div>
+        
+                <div class="collapse" id="orderSummaryCollapse">
+                    <table class="table border border-1">
+                        <tbody>
+                            <tr>
+                                <th>Description</th>
+                                <td></td>
+                                <th>Amount</th>
+                            </tr>
+                            @foreach (MPaymentItem item in payment.Items)
+                            {
+                                <tr>
+                                    <td class="text-start">@item.Name</td>
+                                    <td><span>@item.Quantity</span></td>
+                                    <td>@item.Price @payment.Currency</td>
+                                </tr>
+                            }
+                            <tr>
+                                <td class="text-start fw-bold">Total:</td>
+                                <td></td>
+                                <td>@payment.Amount @payment.Currency</td>
+                            </tr>
+                        </tbody>            
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="text-end">
+                    <a href="@payment.Store.DefaultReturnUrl">Return to @payment.Store.Name</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="_framework/blazor.server.js"></script>
+    
+    <script src="~/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

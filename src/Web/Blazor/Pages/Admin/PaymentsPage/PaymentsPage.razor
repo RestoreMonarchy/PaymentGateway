@@ -1,0 +1,56 @@
+﻿@page "/Admin/Payments"
+@layout AdminLayout
+
+<div class="box">
+    <div class="box-header">
+        <div class="box-title">
+            Payments
+        </div>
+    </div>
+    <div class="box-body">
+        <table class="table table-borderless table-hover">
+            <thead>
+                <tr class="border-bottom">
+                    <th>Public ID</th>
+                    <th>Provider</th>
+                    <th>Store</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Payments != null)
+                {
+                    @foreach (MPayment payment in Payments.OrderByDescending(x => x.Id))
+                    {
+                        <tr class="border-top">
+                            <td>
+                                <a class="text-decoration-none" href="/Admin/Payments/@payment.PublicId">@payment.PublicId</a>
+                            </td>
+                            <td>@payment.Provider</td>
+                            <td>@payment.Store.Name</td>
+                            <td>@payment.Amount</td>
+                            <td>@payment.Currency</td>
+                            <td>
+                                @if (payment.IsCompleted)
+                                {
+                                    if (payment.IsNotified)
+                                    {
+                                        <div class="dot green" title="Successfully completed" />
+                                    } else
+                                    {
+                                        <div class="dot red" title="Notification error" />
+                                    }
+                                } else
+                                {
+                                    <div class="dot muted" title="Pending" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                }        
+            </tbody>
+        </table>
+    </div>
+</div>

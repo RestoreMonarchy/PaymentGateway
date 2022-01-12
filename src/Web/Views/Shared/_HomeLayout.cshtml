@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restore Monarchy Payments</title>
+    <link rel="stylesheet" href="~/vendor/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/css/layouts/HomeLayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PaymentGateway.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header style="margin-bottom: 70px;">
+        <nav class="navbar navbar-light bg-light fixed-top p-1">
+            <div class="container">
+                <div class="d-flex align-items-center w-100">
+                    <div>
+                        <a asp-controller="Home" asp-action="Index">
+                            <img src="/img/Logo.png" alt="" width="45" height="45">
+                        </a>                        
+                    </div>
+                    <div class="ms-2 fs-5">
+                        <a asp-controller="Home" asp-action="Index" class="text-dark text-decoration-none">
+                            Restore Monarchy Payments
+                        </a>                        
+                    </div>
+                    <div class="ms-auto fs-5">
+                        <a asp-controller="Account" asp-action="Login" class="text-decoration-none text-dark">
+                            Login
+                        </a>
+                    </div>
+                </div>
+            </div>          
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; Restore Monarchy @DateTime.Now.Year - Open source at <a href="https://github.com/RestoreMonarchy/PaymentGateway" class="text-decoration-none"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+    </footer>
+
+    <script src="~/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="~/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

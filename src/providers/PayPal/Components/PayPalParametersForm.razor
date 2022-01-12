@@ -1,0 +1,13 @@
+﻿@inherits JsonDataComponentBase<PayPalParameters>
+
+<div class="form-group mb-3">
+    <label class="control-label">Default Receiver</label>
+    <input type="text" @bind="Data.DefaultReceiver" class="form-control" />
+    <span class="text-danger"></span>
+</div>
+<div class="form-check form-switch mb-3">
+    <label class="form-check-label" style="cursor: pointer;">
+        <input type="checkbox" @bind="Data.UseSandbox" class="form-check-input" style="cursor: pointer;" />
+        Use Sandbox
+    </label>
+</div>

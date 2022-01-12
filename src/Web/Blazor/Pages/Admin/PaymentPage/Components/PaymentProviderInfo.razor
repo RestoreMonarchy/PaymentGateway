@@ -1,0 +1,13 @@
+﻿@if (InfoType != null)
+{
+    <div class="box">
+        <div class="box-header">
+            <div class="box-title">
+                @Payment.Provider Info
+            </div>
+        </div>
+        <div class="box-body p-3">
+            <DynamicComponent @ref="Component" Type="InfoType" Parameters="Parameters" />
+        </div>
+    </div>
+}

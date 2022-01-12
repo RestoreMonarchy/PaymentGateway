@@ -1,0 +1,41 @@
+﻿@page "/Admin/Stores"
+@layout AdminLayout
+
+<div class="box">
+    <div class="box-header">
+        <div class="box-title">
+            Stores
+        </div>
+        <div class="box-tools">
+            <a class="btn btn-sm btn-primary" href="/Admin/Stores/New">
+                Create New
+            </a>
+        </div>
+    </div>
+    <div class="box-body">
+        <table class="table table-hover table-borderless">
+            <thead>
+                <tr class="border-bottom">
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Update Date</th>
+                    <th>Create Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Stores != null)
+                {
+                    @foreach (MStore store in Stores)
+                    {
+                        <tr class="border-top">
+                            <td>@store.Id</td>
+                            <td><a href="/Admin/Stores/@store.Id" class="text-decoration-none">@store.Name</a></td>
+                            <td>@store.UpdateDate</td>
+                            <td>@store.CreateDate</td>
+                        </tr>
+                    }
+                }        
+            </tbody>
+        </table>
+    </div>
+</div>

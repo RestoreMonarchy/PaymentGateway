@@ -1,0 +1,17 @@
+<Project Sdk="MSBuild.Sdk.SqlProj/1.11.3">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\dbo\tables\*.sql" />
+    <Content Include="..\dbo\procedures\*.sql" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PostDeploy Include="..\scripts\*.sql" />
+  </ItemGroup>
+
+
+</Project>

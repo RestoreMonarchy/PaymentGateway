@@ -1,0 +1,32 @@
+﻿<div class="mb-3 border border-2 rounded shadow-sm p-3">
+    <div class="d-flex mb-3">
+        <div class="fs-5">@PaymentProvider.PaymentProvider</div>
+        <div class="ms-auto">
+            <button class="btn btn-outline-danger btn-sm" @onclick="DeleteAsync">
+                <i class="far fa-trash-alt"></i>
+            </button>
+        </div>
+    </div>            
+    <div>
+        @if (FormType != null)
+        {
+            <DynamicComponent @ref="Component" Type="FormType" Parameters="Parameters" />    
+        }
+
+        <div class="form-check form-switch mb-3">
+            <label class="form-check-label" style="cursor: pointer;">
+                <input type="checkbox" @bind="@PaymentProvider.IsEnabled" class="form-check-input" style="cursor: pointer;" /> 
+                Enabled
+            </label>
+        </div>
+        <div>
+            @if (isLoading)
+            {
+                <LoadingButton />
+            } else
+            {
+                <button class="btn btn-sm btn-primary" @onclick="SubmitAsync">Save</button>    
+            }            
+        </div>
+    </div>
+</div>

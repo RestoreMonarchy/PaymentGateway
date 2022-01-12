@@ -1,0 +1,17 @@
+﻿html, body {
+    height: 100% !important;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: black;
+    background-size: cover;
+}
+
+#app {
+    display: flex;
+    width: 100%;
+}

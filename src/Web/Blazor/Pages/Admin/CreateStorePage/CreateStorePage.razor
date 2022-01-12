@@ -1,0 +1,66 @@
+﻿@page "/Admin/Stores/New"
+@layout AdminLayout
+
+<div class="mb-3">
+    <div class="fs-4">
+        Create Store 
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="box">
+            <div class="box-header">
+                <div class="box-title">Basic Information</div>
+            </div>
+            <div class="box-body p-3">
+                <EditForm Model="Model" OnValidSubmit="SubmitAsync">
+                    <DataAnnotationsValidator />
+                    <div class="form-group mb-3">
+                        <label class="control-label">Name</label>
+                        <InputText @bind-Value="Model.Name" class="form-control" />
+                        <span class="text-danger"><ValidationMessage For="() => Model.Name" /></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Logo URL</label>
+                        <InputText @bind-Value="Model.LogoUrl" class="form-control" />
+                        <span class="text-danger"><ValidationMessage For="() => Model.LogoUrl" /></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Background URL</label>
+                        <InputText @bind-Value="Model.BackgroundUrl" class="form-control" />
+                        <span class="text-danger"><ValidationMessage For="() => Model.BackgroundUrl" /></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Default Currency</label>
+                        <InputText @bind-Value="Model.DefaultCurrency" class="form-control" />
+                        <span class="text-danger"><ValidationMessage For="() => Model.DefaultCurrency" /></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Default Notify URL</label>
+                        <InputText @bind-Value="Model.DefaultNotifyUrl" class="form-control" />
+                        <span class="text-danger"><ValidationMessage For="() => Model.DefaultNotifyUrl" /></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Default Cancel URL</label>
+                        <InputText @bind-Value="Model.DefaultCancelUrl" class="form-control" />
+                        <span class="text-danger"><ValidationMessage For="() => Model.DefaultCancelUrl" /></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Default Return URL</label>
+                        <InputText @bind-Value="Model.DefaultReturnUrl" class="form-control" />
+                        <span class="text-danger"><ValidationMessage For="() => Model.DefaultReturnUrl" /></span>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <InputCheckbox @bind-Value="Model.IsPublic" class="form-check-input" style="cursor: pointer;" />
+                        <label class="form-check-label" style="cursor: pointer;">Is Public</label>
+                        <span class="text-danger"><ValidationMessage For="() => Model.IsPublic" /></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="submit" value="Add Store" class="btn btn-primary" />
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+﻿@using RestoreMonarchy.PaymentGateway.API.Models
+@model PaymentViewModel
+
+@{
+    Layout = "~/Views/Shared/_PaymentLayout.cshtml";
+    ViewData["Payment"] = Model.Payment;
+}
+
+
+<component type="@Model.ComponentType" render-mode="ServerPrerendered" param-PaymentInfo="@Model.Payment.ToPaymentInfo()"  />

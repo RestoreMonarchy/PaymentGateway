@@ -1,0 +1,32 @@
+﻿@inherits JsonDataComponentBase<PayPalPaymentData>
+
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">
+        <span class="fw-bold">Transaction ID: </span>
+        @Data.TransactionId
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Status: </span>
+        @Data.Status
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Payer Email: </span>
+        @Data.PayerEmail
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Gross: </span>
+        @Data.Gross @Data.Currency
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Fee: </span>
+        @Data.Fee @Data.Currency
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Update Date: </span>
+        @Data.UpdateDate
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Create Date: </span>
+        @Data.CreateDate
+    </li>
+</ul>

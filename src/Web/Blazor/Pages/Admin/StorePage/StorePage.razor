@@ -1,0 +1,111 @@
+﻿@page "/Admin/Stores/{StoreId:int}"
+@using RestoreMonarchy.PaymentGateway.Client.Constants
+@using RestoreMonarchy.PaymentGateway.Web.Blazor.Pages.Admin.StorePage.Components;
+@layout AdminLayout
+
+@if (Store != null) 
+{
+    <div class="mb-3 d-flex align-items-center">
+        <div class="">
+            <img src="@Store.LogoUrl" width="40" height="40" class="border" />
+        </div>
+
+        <div class="ms-2 fs-4">
+            @Store.Name
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">Basic Information</div>
+                </div>
+                <div class="box-body p-3">
+                    <EditForm Model="Model" OnValidSubmit="SaveAsync">
+                        <DataAnnotationsValidator />
+                        <div class="form-group mb-3">
+                            <label class="control-label">Name</label>
+                            <InputText @bind-Value="Model.Name" class="form-control" />
+                            <span class="text-danger"><ValidationMessage For="() => Model.Name" /></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="control-label">Logo URL</label>
+                            <InputText @bind-Value="Model.LogoUrl" class="form-control" />
+                            <span class="text-danger"><ValidationMessage For="() => Model.LogoUrl" /></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="control-label">Background URL</label>
+                            <InputText @bind-Value="Model.BackgroundUrl" class="form-control" />
+                            <span class="text-danger"><ValidationMessage For="() => Model.BackgroundUrl" /></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="control-label">Default Currency</label>
+                            <InputText @bind-Value="Model.DefaultCurrency" class="form-control" />
+                            <span class="text-danger"><ValidationMessage For="() => Model.DefaultCurrency" /></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="control-label">Default Notify URL</label>
+                            <InputText @bind-Value="Model.DefaultNotifyUrl" class="form-control" />
+                            <span class="text-danger"><ValidationMessage For="() => Model.DefaultNotifyUrl" /></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="control-label">Default Cancel URL</label>
+                            <InputText @bind-Value="Model.DefaultCancelUrl" class="form-control" />
+                            <span class="text-danger"><ValidationMessage For="() => Model.DefaultCancelUrl" /></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="control-label">Default Return URL</label>
+                            <InputText @bind-Value="Model.DefaultReturnUrl" class="form-control" />
+                            <span class="text-danger"><ValidationMessage For="() => Model.DefaultReturnUrl" /></span>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                          <InputCheckbox @bind-Value="Model.IsPublic" class="form-check-input" style="cursor: pointer;" />
+                          <label class="form-check-label" style="cursor: pointer;">Is Public</label>
+                          <span class="text-danger"><ValidationMessage For="() => Model.IsPublic" /></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">
+                        Payment Providers
+                    </div>                    
+                </div>
+                <div class="box-body p-3">
+                    <PaymentProvidersTab Store="Store" />   
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">
+                        Store APIKey
+                    </div>
+                </div>
+                <div class="box-body p-3">
+                    <p class="lead">API Key is a secret and you shouldn't share it with anyone!</p>
+                    @if (!showAPIKey)
+                    {
+                        <button class="btn btn-primary" @onclick="ShowAPIKey">
+                            Show APIKey
+                        </button>
+                    } else
+                    {
+                        <input type="text" value="@Store.APIKey" class="form-control w-100" onclick="this.select()" readonly />
+                    }                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+} else 
+{
+    <h4>Store does not exist!</h4>
+}

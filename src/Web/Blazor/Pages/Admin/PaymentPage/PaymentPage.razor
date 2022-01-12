@@ -1,0 +1,135 @@
+﻿@page "/Admin/Payments/{PaymentId}"
+@using RestoreMonarchy.PaymentGateway.Web.Blazor.Pages.Admin.PaymentPage.Components
+@layout AdminLayout
+
+@if (Payment != null)
+{
+    <div class="mb-3 fs-4">
+        Payment #@Payment.Id
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">
+                        Payment Information
+                    </div>
+                </div>
+                <div class="box-body p-3">
+                    <div class="mb-3">
+                        <div class="fs-4">
+                            Public ID
+                        </div>
+                        <div class="fs-5 lead">
+                            @Payment.PublicId
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <div class="fs-5">
+                                Payment Status
+                            </div>
+                            @if (Payment.IsCompleted)
+                            {
+                                <div class="text-success fw-bold">
+                                    Completed
+                                </div>
+                            } else
+                            {
+                                <div class="text-muted fw-bold">
+                                    Pending
+                                </div>
+                            }
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="fs-5">
+                                Payment Provider
+                            </div>
+                            <div class="fw-bold">
+                                @Payment.Provider
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="fs-5">
+                            Items
+                        </div>
+
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Description</th>
+                                    <td></td>
+                                    <th>Amount</th>
+                                </tr>
+                                @foreach (MPaymentItem item in Payment.Items)
+                                {
+                                    <tr>
+                                        <td class="text-start">@item.Name</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.Price @Payment.Currency</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td class="text-start fw-bold">Total:</td>
+                                    <td></td>
+                                    <td class="fw-bold">@Payment.Amount @Payment.Currency</td>
+                                </tr>
+                            </tbody>            
+                        </table>
+                    </div>
+                    <div class="d-flex align-items-center text-muted">
+                        <div>
+                            @Payment.Store.Name
+                        </div>
+                        <div class="ms-auto">
+                            @Payment.CreateDate
+                        </div>                        
+                    </div>
+                    <div class="text-end">
+                        <a href="/pay/@Payment.PublicId" target="_blank" class="text-decoration-none">Go to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            @if (Payment.IsCompleted)
+            {
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-title">
+                            Technical Info
+                        </div>
+                    </div>
+                    <div class="box-body p-3">
+                        <div>
+                            Completed Date: <span class="fw-bold">@Payment.CompletedDate</span>
+                        </div>
+                        <div>
+                            <div>
+                                <span>Notify Status: </span>
+                                @if (Payment.IsNotified)
+                                {
+                                    <span class="text-success fw-bold">Successfull</span>
+                                } else
+                                {
+                                    <span class="text-danger fw-bold">Failed</span>
+                                }
+                            </div>
+                            <div>Notify Date: <span class="fw-bold">@Payment.NotifiedDate</span></div>
+                            <div>Notify Count: <span class="fw-bold">@Payment.NotifiedCount</span></div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Payment.JsonData))
+            {
+                <PaymentProviderInfo Payment="Payment" />    
+            }            
+        </div>
+    </div>
+} else
+{
+    <h4>Payment not found</h4>
+}

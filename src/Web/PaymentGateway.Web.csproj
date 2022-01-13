@@ -25,6 +25,7 @@
     <ProjectReference Include="..\API\PaymentGateway.API.csproj" />
     <ProjectReference Include="..\Client\PaymentGateway.Client.csproj" />
     <ProjectReference Include="..\providers\Mock\Mock.csproj" />
+    <ProjectReference Include="..\providers\Nano\Nano.csproj" />
     <ProjectReference Include="..\providers\PayPal\PayPal.csproj" />
   </ItemGroup>
 

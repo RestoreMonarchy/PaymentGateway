@@ -76,6 +76,16 @@ namespace RestoreMonarchy.PaymentGateway.Web.Repositories
             }, commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<MPayment>> GetPendingPaymentsAsync(string provider)
+        {
+            const string sql = "SELECT p.*, s.*, i.* FROM dbo.Payments p " +
+                "JOIN dbo.Stores s ON s.Id = p.StoreId " +
+                "LEFT JOIN dbo.PaymentItems i ON p.Id = i.PaymentId " +
+                "WHERE p.Provider = @provider AND p.IsCompleted = 0;";
+
+            return await GetPaymentsSharedAsync(sql, new { provider });
+        }
+
         public async Task<MPayment> GetPaymentAsync(Guid publicId)
         {
             const string sql = "SELECT p.*, s.*, i.* FROM dbo.Payments p " +
@@ -108,6 +118,33 @@ namespace RestoreMonarchy.PaymentGateway.Web.Repositories
             }, param);
 
             return payment;
+        }
+
+        private async Task<IEnumerable<MPayment>> GetPaymentsSharedAsync(string sql, object param)
+        {
+            List<MPayment> payments = new List<MPayment>();
+
+            await connection.QueryAsync<MPayment, MStore, MPaymentItem, MPayment>(sql, (p, s, i) =>
+            {
+                MPayment payment = payments.FirstOrDefault(x => x.Id == p.Id);
+
+                if (payment == null)
+                {
+                    payment = p;
+                    payment.Store = s;
+                    payment.Items = new List<MPaymentItem>();
+                    payments.Add(payment);
+                }
+
+                if (i != null)
+                {
+                    payment.Items.Add(i);
+                }
+
+                return null;
+            }, param);
+
+            return payments;
         }
 
         public async Task<PaymentWithProvider> GetPaymentWithProviderAsync(Guid publicId)

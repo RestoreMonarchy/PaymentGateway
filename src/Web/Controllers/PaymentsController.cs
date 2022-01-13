@@ -77,6 +77,7 @@ namespace RestoreMonarchy.PaymentGateway.Web.Controllers
             } else if (action is RazorComponentAction)
             {
                 RazorComponentAction act = (RazorComponentAction)action;
+                pwp.Payment = await paymentInternalService.Repository.GetPaymentAsync(publicId);
                 return View("/Views/Payments/Payment.cshtml", new PaymentViewModel(pwp.Payment, act.ComponentType));
             } else
             {

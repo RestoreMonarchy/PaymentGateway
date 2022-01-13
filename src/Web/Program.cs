@@ -8,6 +8,7 @@ using Quartz;
 using RestoreMonarchy.PaymentGateway.API.Abstractions;
 using RestoreMonarchy.PaymentGateway.API.Services;
 using RestoreMonarchy.PaymentGateway.Providers.Mock;
+using RestoreMonarchy.PaymentGateway.Providers.Nano;
 using RestoreMonarchy.PaymentGateway.Providers.PayPal;
 using RestoreMonarchy.PaymentGateway.Web.Blazor.Services;
 using RestoreMonarchy.PaymentGateway.Web.Repositories;
@@ -62,11 +63,6 @@ foreach (Assembly assembly in assemblies)
     }
 }
 
-foreach (IPaymentProviderPlugin plugin in plugins)
-{
-    plugin.ConfigureServices(builder.Services);
-}
-
 builder.Services.AddTransient<IPaymentProviders, PaymentProviders>(
     (provider) => new PaymentProviders(provider.GetServices<IPaymentProvider>()));
 
@@ -112,17 +108,17 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddHttpClient();
 builder.Services.AddControllersWithViews();
 
+foreach (IPaymentProviderPlugin plugin in plugins)
+{
+    plugin.ConfigureServices(builder.Services, builder.Configuration);
+}
+
 WebApplication app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
-}
-
-foreach (IPaymentProviderPlugin plugin in plugins)
-{
-    plugin.Configure(app);
 }
 
 app.UseHttpsRedirection();
@@ -141,5 +137,10 @@ app.UseEndpoints(endpoints =>
     endpoints.MapBlazorHub();
     endpoints.MapDefaultControllerRoute();
 });
+
+foreach (IPaymentProviderPlugin plugin in plugins)
+{
+    plugin.Configure(app, builder.Configuration);
+}
 
 app.Run();

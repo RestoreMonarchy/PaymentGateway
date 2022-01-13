@@ -50,6 +50,19 @@ namespace RestoreMonarchy.PaymentGateway.Web.Services
             return new PaymentWithParameters<TParameters>(CreatePaymentInfo(pwp.Payment), new JsonData(pwp.Provider.JsonParameters));
         }
 
+        public async Task<IEnumerable<PaymentInfo>> GetPendingPayments(string provider)
+        {
+            IEnumerable<MPayment> pendingPayments = await paymentsRepository.GetPendingPaymentsAsync(provider);
+
+            List<PaymentInfo> paymentInfos = new List<PaymentInfo>();
+            foreach (MPayment payment in pendingPayments)
+            {
+                paymentInfos.Add(CreatePaymentInfo(payment));
+            }
+
+            return paymentInfos;
+        }
+
         public async Task UpdatePaymentData(Guid publicId, object data)
         {
             string jsonData = JsonConvert.SerializeObject(data);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RestoreMonarchy.PaymentGateway.API.Abstractions;
 
@@ -8,14 +9,9 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Mock
     {
         public override string Name => "Mock";
 
-        public override void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IPaymentProvider, MockPaymentProvider>();
-        }
-
-        public override void Configure(IApplicationBuilder app)
-        {
-
         }
     }
 }

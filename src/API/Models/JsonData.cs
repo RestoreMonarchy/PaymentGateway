@@ -10,12 +10,24 @@ namespace RestoreMonarchy.PaymentGateway.API.Models
             Json = json;
         }
 
+        private object Object { get; set; }
+
         public T GetObject<T>()
         {
-            if (Json == null)
-                return default;
+            if (Object == null)
+            {
+                if (Json == null)
+                    return default;
 
-            return JsonConvert.DeserializeObject<T>(Json);
+                Object = JsonConvert.DeserializeObject<T>(Json);
+            }
+
+            return (T)Object;
+        }
+
+        public void UpdateObject(object obj)
+        {
+            Object = obj;
         }
     }
 }

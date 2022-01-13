@@ -9,5 +9,6 @@ namespace RestoreMonarchy.PaymentGateway.API.Services
         Task<PaymentWithParameters<TParameters>> GetPaymentWithParameters<TParameters>(Guid publicId);
         Task CompletePayment(Guid publicId);
         Task UpdatePaymentData(Guid publicId, object data);
+        Task<IEnumerable<PaymentInfo>> GetPendingPayments(string provider);
     }
 }

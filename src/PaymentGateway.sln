@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock", "providers\Mock\Mock
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayPal", "providers\PayPal\PayPal.csproj", "{8C27D131-C264-4C0A-AD55-2A957EE4B58C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nano", "providers\Nano\Nano.csproj", "{3BD55038-A810-4722-A45B-7E274EBF0AB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{8C27D131-C264-4C0A-AD55-2A957EE4B58C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C27D131-C264-4C0A-AD55-2A957EE4B58C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C27D131-C264-4C0A-AD55-2A957EE4B58C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BD55038-A810-4722-A45B-7E274EBF0AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BD55038-A810-4722-A45B-7E274EBF0AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BD55038-A810-4722-A45B-7E274EBF0AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BD55038-A810-4722-A45B-7E274EBF0AB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{82FB4A77-FAF4-45C2-9C32-3DA5DC5E7A63} = {BAEB46AC-DCB9-4D48-9622-C031F87DFF21}
 		{8C27D131-C264-4C0A-AD55-2A957EE4B58C} = {BAEB46AC-DCB9-4D48-9622-C031F87DFF21}
+		{3BD55038-A810-4722-A45B-7E274EBF0AB5} = {BAEB46AC-DCB9-4D48-9622-C031F87DFF21}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C8CB8DD-3503-4F6A-A399-32A60782C89F}

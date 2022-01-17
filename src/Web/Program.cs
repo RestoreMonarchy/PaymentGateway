@@ -121,6 +121,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+foreach (IPaymentProviderPlugin plugin in plugins)
+{
+    plugin.Configure(app, builder.Configuration);
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -132,15 +137,10 @@ app.UseAuthentication();
 app.MapControllers();
 app.MapFallbackToPage("/_Host");
 
-app.UseEndpoints(endpoints => 
+app.UseEndpoints(endpoints =>
 {
     endpoints.MapBlazorHub();
     endpoints.MapDefaultControllerRoute();
 });
-
-foreach (IPaymentProviderPlugin plugin in plugins)
-{
-    plugin.Configure(app, builder.Configuration);
-}
 
 app.Run();

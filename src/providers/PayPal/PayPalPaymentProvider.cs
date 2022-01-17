@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 using RestoreMonarchy.PaymentGateway.API.Abstractions;
 using RestoreMonarchy.PaymentGateway.API.Models;
 using RestoreMonarchy.PaymentGateway.API.Results;
@@ -16,16 +17,23 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal
 
         private readonly IPaymentService paymentService;
         private readonly IBaseUrl baseUrl;
+        private readonly ILogger<PayPalPaymentProvider> logger;
 
-        public PayPalPaymentProvider(IPaymentService paymentService, IBaseUrl baseUrl)
+        public PayPalPaymentProvider(IPaymentService paymentService, IBaseUrl baseUrl, 
+            ILogger<PayPalPaymentProvider> logger)
         {
             this.paymentService = paymentService;
             this.baseUrl = baseUrl;
+            this.logger = logger;
         }
 
         public override async Task<UserAction> StartPaymentAsync(Guid publicId)
         {
             PaymentWithParameters<PayPalParameters> pwp = await paymentService.GetPaymentWithParameters<PayPalParameters>(publicId);
+
+            string notifyUrl = baseUrl.Get("api/payments/notify/paypal");
+
+            logger.LogInformation("Notify url for PayPal payment is: {0}", notifyUrl);
 
             Dictionary<string, string> dict = new()
             {
@@ -37,7 +45,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal
                 { "amount", pwp.Payment.Amount.ToString() },
                 { "no_shipping", "1" },
                 { "no_note", "1" },
-                { "notify_url", baseUrl.Get("api/payments/notify/paypal") },
+                { "notify_url", notifyUrl },
                 { "return", pwp.Payment.Store.ReturnUrl },
                 { "cancel_return", pwp.Payment.Store.CancelUrl }
             };

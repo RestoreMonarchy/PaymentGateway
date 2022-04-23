@@ -59,7 +59,7 @@
     <Folder Include="dbo" />
     <Folder Include="dbo\tables" />
     <Folder Include="dbo\procedures" />
-    <Folder Include="scripts" />
+    <Folder Include="dbo\tables\quartz" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\tables\Stores.sql" />
@@ -71,11 +71,19 @@
     <Build Include="dbo\procedures\CreateUser.sql" />
     <Build Include="dbo\tables\StorePaymentProviders.sql" />
     <Build Include="dbo\procedures\UpdateStorePaymentProvider.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_BLOB_TRIGGERS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_CALENDARS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_CRON_TRIGGERS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_FIRED_TRIGGERS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_JOB_DETAILS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_LOCKS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_PAUSED_TRIGGER_GRPS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_SCHEDULER_STATE.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_SIMPLE_TRIGGERS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_SIMPROP_TRIGGERS.sql" />
+    <Build Include="dbo\tables\quartz\QRTZ_TRIGGERS.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PaymentGateway.Database.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <PostDeploy Include="scripts\Quartz.PostDeployment.sql" />
   </ItemGroup>
 </Project>

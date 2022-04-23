@@ -82,7 +82,7 @@ builder.Services.AddQuartz(q =>
     q.UseMicrosoftDependencyInjectionJobFactory();
     q.UsePersistentStore(x =>
     {
-        x.UseSqlServer(builder.Configuration.GetConnectionString("Quartz"));
+        x.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
         x.UseJsonSerializer();
     });
 });

@@ -6,12 +6,8 @@
 
   <ItemGroup>
     <Content Include="..\dbo\tables\*.sql" />
+	<Content Include="..\dbo\tables\quartz\*.sql" />
     <Content Include="..\dbo\procedures\*.sql" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PostDeploy Include="..\scripts\*.sql" />
-  </ItemGroup>
-
 
 </Project>

@@ -1,75 +1,49 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Nano.Net.WebSockets;
-using RestoreMonarchy.PaymentGateway.Providers.Nano.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
 {
     public class NanoHostedService : IHostedService
     {
-        private readonly NanoOptions options;
         private readonly ILogger<NanoHostedService> logger;
-        private readonly NanoPaymentStore paymentStore;
-        private readonly NanoService nanoService;
+        private readonly WaitingNanoPaymentStore paymentStore;
+        private readonly NanoWebSocketService webSocketService;
+        private readonly NanoTransactionService transactionService;
 
-        private readonly NanoWebSocketClient webSocketClient;
-
-        public NanoHostedService(IOptions<NanoOptions> options, ILogger<NanoHostedService> logger, NanoPaymentStore paymentStore,
-            NanoService nanoService)
+        public NanoHostedService(ILogger<NanoHostedService> logger, WaitingNanoPaymentStore paymentStore, NanoWebSocketService webSocketService, NanoTransactionService transactionService)
         {
-            this.options = options.Value;
             this.logger = logger;
             this.paymentStore = paymentStore;
-            this.nanoService = nanoService;
-
-            webSocketClient = new NanoWebSocketClient(this.options.WebSocketUrl);
-            webSocketClient.Subscribe(new ConfirmationTopic(accounts: paymentStore.PendingPaymentsAddress));
-
-            webSocketClient.Confirmation += WebSocketClient_Confirmation;
-            paymentStore.OnPendingPaymentsUpdated += PaymentStore_OnPendingPaymentsUpdated;
-        }
-
-        private void PaymentStore_OnPendingPaymentsUpdated()
-        {
-            webSocketClient.UpdateSubscription(new ConfirmationTopic(accounts: paymentStore.PendingPaymentsAddress));
+            this.webSocketService = webSocketService;
+            this.transactionService = transactionService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await paymentStore.ReloadPendingPaymentsAsync();
-            await nanoService.CheckPendingTransactions();
-            await Task.Factory.StartNew(StartWebSocketAsync);
-        }
+            logger.LogInformation($"{nameof(NanoHostedService)} is starting...");
+            
+            await paymentStore.ReloadAsync();
+            
+            await transactionService.ProcessPendingBlocksAsync();
+            await transactionService.EmptyBalancesAsync();
 
-        public async Task StartWebSocketAsync()
-        {
-            logger.LogInformation("WebSocketClient starting...");
-            await webSocketClient.Start();
-            logger.LogInformation("WebSocketClient started!");
+            await webSocketService.StartAsync();
+
+            logger.LogInformation($"{nameof(NanoHostedService)} successfully started!");
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            await webSocketClient.Stop();
-            logger.LogInformation("WebSocketClient stopped");
-        }
+            logger.LogInformation($"{nameof(NanoHostedService)} is stopping...");
 
-        private async void WebSocketClient_Confirmation(NanoWebSocketClient client, ConfirmationTopicMessage topicMessage)
-        {
-            if (topicMessage.Message.Block.Subtype != "send")
-            {
-                return;
-            }
+            await webSocketService.StopAsync();
 
-            if (!paymentStore.IsPending(topicMessage.Message.Block.LinkAsAccount))
-            {
-                return;
-            }
-
-            await Task.Factory.StartNew(() =>
-                nanoService.CheckTransactionAsync(topicMessage.Message.Block.LinkAsAccount,
-                topicMessage.Message.Hash, topicMessage.Message.Amount, topicMessage.Message.Block.Account));
+            logger.LogInformation($"{nameof(NanoHostedService)} successfully stopped!");
         }
     }
 }

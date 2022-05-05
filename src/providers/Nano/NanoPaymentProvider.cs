@@ -10,19 +10,18 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano
         public override string Name => "Nano";
 
         public override Type FormComponentType => null;
+        public override Type InfoComponentType => typeof(NanoPaymentInfo);
 
-        public override Type InfoComponentType => null;
+        private readonly NanoService nanoService;
 
-        private readonly NanoPaymentStore paymentStore;
-
-        public NanoPaymentProvider(NanoPaymentStore paymentStore)
+        public NanoPaymentProvider(NanoService nanoService)
         {
-            this.paymentStore = paymentStore;
+            this.nanoService = nanoService;
         }
 
         public override async Task<UserAction> StartPaymentAsync(Guid publicId)
         {
-            await paymentStore.GetOrCreateNanoPaymentAsync(publicId);
+            await nanoService.GetOrCreatePaymentAsync(publicId);
             return RazorComponent(typeof(NanoPayment));
         }
     }

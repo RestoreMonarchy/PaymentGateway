@@ -21,10 +21,4 @@
     <ProjectReference Include="..\Web\PaymentGateway.Web.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Nano.Net">
-      <HintPath>..\libraries\Nano.Net.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock", "providers\Mock\Mock
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayPal", "providers\PayPal\PayPal.csproj", "{8C27D131-C264-4C0A-AD55-2A957EE4B58C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nano", "providers\Nano\Nano.csproj", "{3BD55038-A810-4722-A45B-7E274EBF0AB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nano", "providers\Nano\Nano.csproj", "{3BD55038-A810-4722-A45B-7E274EBF0AB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

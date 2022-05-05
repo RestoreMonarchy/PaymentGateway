@@ -42,7 +42,8 @@ builder.Services.AddTransient<UserService>();
 Assembly[] assemblies = new Assembly[]
 {
     typeof(MockPaymentProvider).Assembly,
-    typeof(PayPalPaymentProvider).Assembly
+    typeof(PayPalPaymentProvider).Assembly,
+    typeof(NanoPaymentProvider).Assembly
 };
 
 List<IPaymentProviderPlugin> plugins = new List<IPaymentProviderPlugin>();

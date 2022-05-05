@@ -11,7 +11,7 @@ namespace RestoreMonarchy.PaymentGateway.Tests
     public class PayemntGatewayClientTest
     {
         const string LocalAddress = "https://localhost:7255";
-        const string LocalAPIKey = "b20ba663-b240-4b9b-9be5-31d1a346032f";
+        const string LocalAPIKey = "1d8a5635-d9b0-4898-8912-05f3f6d91eef";
         const string ServerBaseAddress = "https://pay.restoremonarchy.com";
         const string ServerAPIKey = "d0ee1508-1819-4e40-9ffc-ea76a222d1de";
 

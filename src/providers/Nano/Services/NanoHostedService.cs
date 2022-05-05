@@ -38,6 +38,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await paymentStore.ReloadPendingPaymentsAsync();
+
             await nanoService.CheckPendingTransactions();
             await Task.Factory.StartNew(StartWebSocketAsync);
         }
@@ -67,9 +68,11 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
                 return;
             }
 
-            await Task.Factory.StartNew(() =>
-                nanoService.CheckTransactionAsync(topicMessage.Message.Block.LinkAsAccount,
-                topicMessage.Message.Hash, topicMessage.Message.Amount, topicMessage.Message.Block.Account));
+            await Task.Factory.StartNew(async () =>
+            {
+                await nanoService.CheckTransactionAsync(topicMessage.Message.Block.LinkAsAccount,
+                    topicMessage.Message.Hash, topicMessage.Message.Amount, topicMessage.Message.Block.Account);
+            });
         }
     }
 }

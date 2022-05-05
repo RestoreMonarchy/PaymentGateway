@@ -50,7 +50,8 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
 
             NanoPaymentData paymentData = payment.Data.GetObject<NanoPaymentData>();
 
-            Account account = Account.FromPrivateKey(paymentData.ReceivePrivateKey);
+            
+            Account account = new(paymentData.ReceivePrivateKey);
             Amount amount = Amount.FromRaw(amountRaw);
 
             await nodeClient.ReceiveBlockAsync(account, blockHash, amount);

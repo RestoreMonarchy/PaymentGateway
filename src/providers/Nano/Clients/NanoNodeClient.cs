@@ -27,7 +27,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Clients
 
         public async Task<Dictionary<string, Dictionary<string, ReceivableBlock>>> GetAccountsPendingAsync(string[] accounts)
         {
-            AccountsPendingResponse response = await rpcClient.AccountsPendingAsync(accounts);
+            AccountsPendingResponse response = await rpcClient.AccountsPendingAsync(accounts, 5);
             return response.Blocks;
         }
 
@@ -48,7 +48,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Clients
             Block sendBlock = Block.CreateSendBlock(account, receiveAddress, amount, pow);
             await rpcClient.ProcessAsync(sendBlock);
         }
-
+            
         private async Task<string> GetPowAsync(Account account)
         {
             WorkGenerateResponse workGen;

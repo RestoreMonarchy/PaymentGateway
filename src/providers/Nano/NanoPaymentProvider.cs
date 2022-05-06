@@ -10,8 +10,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano
         public override string Name => "Nano";
 
         public override Type FormComponentType => null;
-
-        public override Type InfoComponentType => null;
+        public override Type InfoComponentType => typeof(NanoPaymentInfo);
 
         private readonly NanoService nanoService;
 

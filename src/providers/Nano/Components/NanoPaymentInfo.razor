@@ -1,0 +1,60 @@
+﻿@inherits JsonDataComponentBase<NanoPaymentData>
+
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">
+        <span class="fw-bold">Address: </span>
+        <a target="_blank" href="https://nanolooker.com/account/@Data.ReceiveAddress" class="text-decoration-none">
+            @Data.ReceiveAddress
+        </a>
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Private Key: </span>
+        @if (isShow)
+        {
+            <span>@PrivateKeyHex</span>
+        } else
+        {
+            <a href="javascript:void(0)" @onclick="HandleShow">
+                Show
+            </a>
+        }
+        
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Minimum Amount: </span>
+        @Data.MinimumAmount
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Minimum Amount Expire Date: </span>
+        @if (Data.MinimumAmountExpireDate < DateTime.Now)
+        {
+            <span>@Data.MinimumAmountExpireDate</span>
+        } else
+        {
+            <span>Expired</span>
+        }
+    </li>
+    @if (Data.PayerAddress != null)
+    {
+        <li class="list-group-item">
+            <span class="fw-bold">Payer Address: </span>
+            <a target="_blank" href="https://nanolooker.com/account/@Data.PayerAddress" class="text-decoration-none">
+                @Data.PayerAddress
+            </a>
+        </li>
+        <li class="list-group-item">
+            <span class="fw-bold">Paid Amount: </span>
+            @Data.PaidAmount
+        </li>
+        <li class="list-group-item">
+            <span class="fw-bold">Payment Block: </span>
+            <a target="_blank" href="https://nanolooker.com/block/@Data.PaymentBlock" class="text-decoration-none">
+                @Data.PaymentBlock
+            </a>
+        </li>
+        <li class="list-group-item">
+            <span class="fw-bold">Paid Date: </span>
+            @Data.ReceiveDate
+        </li>
+    }
+</ul>

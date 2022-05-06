@@ -12,10 +12,9 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Models
 
         public string NodeUrl { get; set; }
         public string WebSocketUrl { get; set; }
-        public double PaymentExpireMinutes { get; set; }
-
-
+        
         public string CoinMarketCapAPIUrl { get; set; }
         public string CoinMarketCapAPIKey { get; set; }
+        public double PriceRefreshMinutes { get; set; }
     }
 }

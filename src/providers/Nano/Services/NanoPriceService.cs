@@ -32,7 +32,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
             NanoPaymentData paymentData = payment.Data.GetObject<NanoPaymentData>();
             
             paymentData.MinimumAmount = NumbersHelper.RoundNano(amount);
-            paymentData.MinimumAmountExpireDate = DateTime.Now.AddMinutes(options.PaymentExpireMinutes);
+            paymentData.MinimumAmountExpireDate = DateTime.Now.AddMinutes(options.PriceRefreshMinutes);
             
             payment.Data.UpdateObject(paymentData);
         }

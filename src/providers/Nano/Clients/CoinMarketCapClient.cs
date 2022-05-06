@@ -23,6 +23,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Clients
             HttpClient client = httpClientFactory.CreateClient("CoinMarketCap");
             client.DefaultRequestHeaders.Add("X-CMC_PRO_API_KEY", options.CoinMarketCapAPIKey);
             client.BaseAddress = new Uri(options.CoinMarketCapAPIUrl);
+            client.Timeout = TimeSpan.FromSeconds(30);
             return client;
         }
 

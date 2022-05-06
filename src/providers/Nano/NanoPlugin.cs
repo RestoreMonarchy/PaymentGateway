@@ -23,9 +23,16 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano
             services.AddTransient<IPaymentProvider, NanoPaymentProvider>();
 
             services.AddTransient<CoinMarketCapClient>();
-            services.AddTransient<NanoService>();
             services.AddTransient<NanoNodeClient>();
-            services.AddSingleton<NanoPaymentStore>();
+
+            services.AddTransient<NanoService>();
+            services.AddTransient<NanoPriceService>();
+            services.AddTransient<NanoWebSocketService>();
+            services.AddTransient<NanoTransactionService>();
+            services.AddTransient<NanoNodeService>();
+
+            services.AddSingleton<WaitingNanoPaymentStore>();
+
             services.AddHostedService<NanoHostedService>();
 
             services.Configure<NanoOptions>(configuration.GetSection(NanoOptions.Key));

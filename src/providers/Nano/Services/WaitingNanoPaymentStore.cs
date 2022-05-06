@@ -17,10 +17,10 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
 
         private List<WaitingNanoPayment> waitingPayments;
 
-        public event Action<WaitingNanoPayment> OnWaitingPaymentAdded;
-        private void TriggerOnWaitingPaymentAdded(WaitingNanoPayment payment)
+        public event Action<WaitingNanoPayment> OnUpdate;
+        private void TriggerOnUpdate(WaitingNanoPayment payment)
         {
-            OnWaitingPaymentAdded?.Invoke(payment);
+            OnUpdate?.Invoke(payment);
         }
 
         public async ValueTask ReloadAsync()
@@ -49,12 +49,18 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
         public void Add(WaitingNanoPayment payment)
         {
             waitingPayments.Add(payment);
-            TriggerOnWaitingPaymentAdded(payment);
+            TriggerOnUpdate(payment);
         }
 
-        public IEnumerable<string> GetAllAddresses()
+        public bool TryGetByReceiveAddress(string address, out WaitingNanoPayment payment)
         {
-            return waitingPayments.Select(x => x.ReceiveAddress);
+            payment = GetByReceiveAddress(address);
+            return payment != null;
+        }
+
+        public string[] GetAllAddresses()
+        {
+            return waitingPayments.Select(x => x.ReceiveAddress).ToArray();
         }
 
         public WaitingNanoPayment GetByReceiveAddress(string address)

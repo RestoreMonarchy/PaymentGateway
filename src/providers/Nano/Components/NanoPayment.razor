@@ -1,19 +1,19 @@
 ﻿<div>
     <div class="mb-3">
         <div class="mb-2 text-center">
-            <img src="/api/images/payments/@PaymentInfo.PublicId" width="150" height="150" class="border border-3" />
+            <img src="data:image/jpeg;base64, @QRCodeBase64" width="150" height="150" class="border border-3" />
         </div>
         <div> 
-            Send <span class="fw-bold">@Data.MinimumAmount</span> Nano to address in QR code or below
+            Send <span class="fw-bold">@Data.MinimumAmount</span> XNO to address in QR code or below
         </div>
     </div>
-    
+
     <div class="input-group input-group mb-1">
         <span class="input-group-text">Address</span>
-        <input type="text" class="form-control" readonly value="@Data.ReceiveAddress" onclick="this.select()">
+        <input type="text" class="form-control bg-white" readonly value="@Data.ReceiveAddress" onclick="this.select()">
     </div>
     <div class="input-group input-group mb-1">
         <span class="input-group-text">Amount</span>
-        <input type="text" class="form-control" readonly value="@Data.MinimumAmount" onclick="this.select()">
+        <input type="text" class="form-control bg-white" readonly value="@Data.MinimumAmount" onclick="this.select()">
     </div>
 </div>

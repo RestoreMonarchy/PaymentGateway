@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using QRCoder;
 using RestoreMonarchy.PaymentGateway.API.Models;
 using RestoreMonarchy.PaymentGateway.Providers.Nano.Models;
+using RestoreMonarchy.PaymentGateway.Providers.Nano.Services;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Components
 {
@@ -9,11 +13,34 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Components
         [Parameter]
         public PaymentInfo PaymentInfo { get; set; }
 
+        [Inject]
+        public NanoService NanoService { get; set; }
+
         public NanoPaymentData Data { get; set; }
 
         protected override void OnParametersSet()
         {
             Data = PaymentInfo.Data.GetObject<NanoPaymentData>();
+            UpdateQRCode();
+        }
+
+        public string QRCodeBase64 { get; set; }
+
+        public void UpdateQRCode()
+        {
+            byte[] codeData = GenerateQRCode(Data.ReceiveAddress);
+            QRCodeBase64 = Convert.ToBase64String(codeData);
+        }
+
+        public static byte[] GenerateQRCode(string content)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap graphic = qrCode.GetGraphic(20);
+            using MemoryStream ms = new();
+            graphic.Save(ms, ImageFormat.Jpeg);
+            return ms.ToArray();
         }
     }
 }

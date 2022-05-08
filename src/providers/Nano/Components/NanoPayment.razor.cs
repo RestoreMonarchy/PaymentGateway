@@ -14,14 +14,29 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Components
         public PaymentInfo PaymentInfo { get; set; }
 
         [Inject]
-        public NanoService NanoService { get; set; }
+        public NanoEventService EventService { get; set; }
 
         public NanoPaymentData Data { get; set; }
 
         protected override void OnParametersSet()
         {
             Data = PaymentInfo.Data.GetObject<NanoPaymentData>();
-            UpdateQRCode();
+            IsReceived = Data.PaymentBlock != null;
+            EventService.OnPaymentReceived += OnPaymentReceived;
+            UpdateQRCode();            
+        }
+
+        public bool IsReceived { get; set; }
+        private async void OnPaymentReceived(Guid publicId)
+        {
+            if (publicId != PaymentInfo.PublicId)
+                return;
+
+            await InvokeAsync(() =>
+            {
+                IsReceived = true;
+                StateHasChanged();
+            });
         }
 
         public string QRCodeBase64 { get; set; }
@@ -34,10 +49,10 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Components
 
         public static byte[] GenerateQRCode(string content)
         {
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new QRCode(qrCodeData);
-            Bitmap graphic = qrCode.GetGraphic(20);
+            QRCodeGenerator generator = new();
+            QRCodeData data = generator.CreateQrCode(content, QRCodeGenerator.ECCLevel.Q);
+            QRCode code = new(data);
+            Bitmap graphic = code.GetGraphic(20);
             using MemoryStream ms = new();
             graphic.Save(ms, ImageFormat.Jpeg);
             return ms.ToArray();

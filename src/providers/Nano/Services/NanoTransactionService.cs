@@ -12,13 +12,15 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
         private readonly IPaymentService paymentService;
         private readonly NanoPriceService priceService;
         private readonly NanoNodeClient nodeClient;
+        private readonly NanoEventService eventService;
 
-        public NanoTransactionService(WaitingNanoPaymentStore paymentStore, IPaymentService paymentService, NanoPriceService priceService, NanoNodeClient nodeClient)
+        public NanoTransactionService(WaitingNanoPaymentStore paymentStore, IPaymentService paymentService, NanoPriceService priceService, NanoNodeClient nodeClient, NanoEventService eventService)
         {
             this.paymentStore = paymentStore;
             this.paymentService = paymentService;
             this.priceService = priceService;
             this.nodeClient = nodeClient;
+            this.eventService = eventService;
         }
 
         public async ValueTask ProcessPendingBlocksAsync()
@@ -144,6 +146,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
                 await paymentService.UpdatePaymentData(payment.PublicId, paymentData);
                 
                 await paymentService.CompletePayment(payment.PublicId);
+                eventService.TriggerOnPaymentReceived(payment.PublicId);
             } else
             {
                 await Refund();

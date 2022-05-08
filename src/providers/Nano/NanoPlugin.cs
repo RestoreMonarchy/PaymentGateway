@@ -31,6 +31,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano
             services.AddTransient<NanoTransactionService>();
 
             services.AddSingleton<WaitingNanoPaymentStore>();
+            services.AddSingleton<NanoEventService>();
 
             services.AddHostedService<NanoHostedService>();
 

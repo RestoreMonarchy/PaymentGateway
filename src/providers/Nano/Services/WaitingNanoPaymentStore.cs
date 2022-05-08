@@ -31,6 +31,9 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano.Services
             foreach (PaymentInfo paymentInfo in pendingPayments)
             {
                 NanoPaymentData data = paymentInfo.Data.GetObject<NanoPaymentData>();
+                // TODO: data should never be null for nano payment, it should be generated and inserted when creating a payment
+                if (data == null)
+                    continue;
                 WaitingNanoPayment waitingPayment = new()
                 {
                     PublicId = paymentInfo.PublicId,

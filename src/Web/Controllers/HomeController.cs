@@ -9,12 +9,7 @@ namespace RestoreMonarchy.PaymentGateway.Web.Controllers
         [HttpGet("~/")]
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return StatusCode(StatusCodes.Status404NotFound);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

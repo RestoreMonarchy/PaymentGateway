@@ -1,26 +1,21 @@
-﻿html {
-    position: relative;
-    min-height: 100%;
-}
-
-html {
-    font-size: 14px;
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+﻿html, body {
+    height: 100% !important;
 }
 
 body {
-    margin-bottom: 60px;
+    display: flex;
+    align-items: center !important;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #1e1e1e;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
+main {
+    display: flex;
     width: 100%;
-    white-space: nowrap;
-    line-height: 60px;
+}
+
+.form-signin {
+    padding: 30px;
+    margin: auto;
 }

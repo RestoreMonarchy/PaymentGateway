@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "providers", "providers", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.API", "API\PaymentGateway.API.csproj", "{EA518035-3CCB-4BCD-9F2F-8784D80A70C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock", "providers\Mock\Mock.csproj", "{82FB4A77-FAF4-45C2-9C32-3DA5DC5E7A63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.Providers.Mock", "providers\Mock\PaymentGateway.Providers.Mock.csproj", "{82FB4A77-FAF4-45C2-9C32-3DA5DC5E7A63}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayPal", "providers\PayPal\PayPal.csproj", "{8C27D131-C264-4C0A-AD55-2A957EE4B58C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.Providers.PayPal", "providers\PayPal\PaymentGateway.Providers.PayPal.csproj", "{8C27D131-C264-4C0A-AD55-2A957EE4B58C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nano", "providers\Nano\Nano.csproj", "{3BD55038-A810-4722-A45B-7E274EBF0AB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.Providers.Nano", "providers\Nano\PaymentGateway.Providers.Nano.csproj", "{3BD55038-A810-4722-A45B-7E274EBF0AB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

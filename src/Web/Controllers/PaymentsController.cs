@@ -19,17 +19,12 @@ namespace RestoreMonarchy.PaymentGateway.Web.Controllers
     public class PaymentsController : Controller
     {
         private readonly PaymentInternalService paymentInternalService;
-        private readonly IPaymentService paymentService;
         private readonly IPaymentProviders paymentProviders;
-        private readonly ApplicationPartManager _applicationPartManager;
 
-        public PaymentsController(PaymentInternalService paymentInternalService, IPaymentService paymentService, 
-            IPaymentProviders paymentProviders, ApplicationPartManager applicationPartManager)
+        public PaymentsController(PaymentInternalService paymentInternalService, IPaymentProviders paymentProviders)
         {
             this.paymentInternalService = paymentInternalService;
-            this.paymentService = paymentService;
             this.paymentProviders = paymentProviders;
-            _applicationPartManager = applicationPartManager;
         }
 
         [HttpPost]

@@ -1,9 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
-using Microsoft.Extensions.FileProviders;
 using Quartz;
 using RestoreMonarchy.PaymentGateway.API.Abstractions;
 using RestoreMonarchy.PaymentGateway.API.Services;
@@ -14,10 +10,16 @@ using RestoreMonarchy.PaymentGateway.Web.Blazor.Services;
 using RestoreMonarchy.PaymentGateway.Web.Repositories;
 using RestoreMonarchy.PaymentGateway.Web.Services;
 using RestoreMonarchy.PaymentGateway.Web.Services.Jobs;
+using Serilog;
 using System.Data.SqlClient;
 using System.Reflection;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+{
+    loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration);
+});
 
 builder.Services.AddScoped<BlazorUser>();
 
@@ -70,7 +72,6 @@ builder.Services.AddTransient<IPaymentProviders, PaymentProviders>(
 // Add API services
 builder.Services.AddTransient<IBaseUrl, BaseUrlService>();
 builder.Services.AddTransient(typeof(IPaymentService), typeof(PaymentService));
-
 
 // Add Quartz services
 builder.Services.AddTransient<PaymentNotifyJob>();

@@ -17,14 +17,13 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal
 
         private readonly IPaymentService paymentService;
         private readonly IBaseUrl baseUrl;
-        private readonly ILogger<PayPalPaymentProvider> logger;
+        private readonly ILoggingService loggingService;
 
-        public PayPalPaymentProvider(IPaymentService paymentService, IBaseUrl baseUrl, 
-            ILogger<PayPalPaymentProvider> logger)
+        public PayPalPaymentProvider(IPaymentService paymentService, IBaseUrl baseUrl, ILoggingService loggingService)
         {
             this.paymentService = paymentService;
             this.baseUrl = baseUrl;
-            this.logger = logger;
+            this.loggingService = loggingService;
         }
 
         public override async Task<UserAction> StartPaymentAsync(Guid publicId)
@@ -32,8 +31,8 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal
             PaymentWithParameters<PayPalParameters> pwp = await paymentService.GetPaymentWithParameters<PayPalParameters>(publicId);
 
             string notifyUrl = baseUrl.Get("api/payments/notify/paypal");
-
-            logger.LogInformation("Notify url for PayPal payment is: {0}", notifyUrl);
+                        
+            loggingService.LogInformation<PayPalPaymentProvider>("The notify url for paypal is: {0}", notifyUrl);
 
             Dictionary<string, string> dict = new()
             {

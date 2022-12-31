@@ -10,13 +10,15 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
     public class PayPalService
     {
         private readonly IPaymentService paymentService;
+        private readonly ILoggingService loggingService;
 
         private readonly HttpClient httpClient;
 
-        public PayPalService(IHttpClientFactory httpClientFactory, IPaymentService paymentService)
+        public PayPalService(IHttpClientFactory httpClientFactory, ILoggingService loggingService, IPaymentService paymentService)
         {
             this.paymentService = paymentService;
-            httpClient = httpClientFactory.CreateClient();
+            this.loggingService = loggingService;
+            httpClient = httpClientFactory.CreateClient();            
         }
 
         public async Task ValidatePaymentAsync(string requestBody)
@@ -25,6 +27,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
 
             if (!Guid.TryParse(dict["custom"], out Guid publicId))
             {
+                loggingService.LogInformation<PayPalService>("The 'custom' property value is not a valid GUID");
                 return;
             }
 
@@ -32,6 +35,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
 
             if (pwp == null)
             {
+                loggingService.LogInformation<PayPalService>("The payment could not be found");
                 return;
             }
 
@@ -41,27 +45,27 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
 
             if (!verification.Equals("VERIFIED"))
             {
+                loggingService.LogInformation<PayPalService>("The request could not be verified");
                 return;
             }
 
-            string receiver;
-            if (pwp.Payment.Receiver != null)
-                receiver = pwp.Payment.Receiver;
-            else
-                receiver = pwp.Parameters.DefaultReceiver;
+            string receiver = pwp.Payment.Receiver != null ? pwp.Payment.Receiver : pwp.Parameters.DefaultReceiver;
 
             if (dict["receiver_email"] != receiver)
             {
+                loggingService.LogInformation<PayPalService>("The 'receiver_email' property value is not equal to the payment receiver");
                 return;
             }
 
             if (dict["mc_currency"] != pwp.Payment.Currency)
             {
+                loggingService.LogInformation<PayPalService>("The 'mc_currency' property value is not equal to the payment currency");
                 return;
             }
 
             if (decimal.Parse(dict["mc_gross"]) < pwp.Payment.Amount)
             {
+                loggingService.LogInformation<PayPalService>("The 'mc_gross' property value is not smaller than payment amount");
                 return;
             }
 
@@ -76,10 +80,13 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
             };
 
             if (dict["mc_fee"] != null)
+            {
                 paypalPayment.Fee = decimal.Parse(dict["mc_fee"]);
+            }                
 
             await paymentService.UpdatePaymentData(publicId, paypalPayment);
             await paymentService.CompletePayment(publicId);
+            loggingService.LogInformation<PayPalService>("The payment was valid and has been completed successfully");
         }
     }
 }

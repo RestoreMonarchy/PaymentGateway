@@ -71,6 +71,7 @@ builder.Services.AddTransient<IPaymentProviders, PaymentProviders>(
 
 // Add API services
 builder.Services.AddTransient<IBaseUrl, BaseUrlService>();
+builder.Services.AddTransient<ILoggingService, LoggingService>();
 builder.Services.AddTransient(typeof(IPaymentService), typeof(PaymentService));
 
 // Add Quartz services

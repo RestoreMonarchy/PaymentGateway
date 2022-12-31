@@ -20,11 +20,13 @@ namespace RestoreMonarchy.PaymentGateway.Web.Controllers
     {
         private readonly PaymentInternalService paymentInternalService;
         private readonly IPaymentProviders paymentProviders;
+        private readonly ILoggingService loggingService;
 
-        public PaymentsController(PaymentInternalService paymentInternalService, IPaymentProviders paymentProviders)
+        public PaymentsController(PaymentInternalService paymentInternalService, IPaymentProviders paymentProviders, ILoggingService loggingService)
         {
             this.paymentInternalService = paymentInternalService;
             this.paymentProviders = paymentProviders;
+            this.loggingService = loggingService;
         }
 
         [HttpPost]
@@ -55,6 +57,7 @@ namespace RestoreMonarchy.PaymentGateway.Web.Controllers
             UserAction action;
             try
             {
+                loggingService.LogInformation("Executing 'StartPayment' on provider {0} for payment {1}", pwp.Payment.Provider, pwp.Payment.PublicId);
                 action = await paymentProviders.StartPaymentAsync(publicId, pwp.Payment.Provider);                
             } catch (PaymentProviderNotSupportedException)
             {

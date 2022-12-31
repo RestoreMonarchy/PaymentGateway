@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using RestoreMonarchy.PaymentGateway.API.Services;
 using System.Text;
 
 namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
@@ -7,11 +8,11 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
     public class PayPalMiddleware : IMiddleware
     {
         private readonly PayPalService paypalService;
-        private readonly ILogger<PayPalMiddleware> logger;
-        public PayPalMiddleware(PayPalService paypalService, ILogger<PayPalMiddleware> logger)
+        private readonly ILoggingService loggingService;
+        public PayPalMiddleware(PayPalService paypalService, ILoggingService loggingService)
         {
             this.paypalService = paypalService;
-            this.logger = logger;
+            this.loggingService = loggingService;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -20,7 +21,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
             using StreamReader reader = new(context.Request.Body, Encoding.ASCII);
             requestBody = await reader.ReadToEndAsync();
 
-            logger.LogInformation($"Received request at PayPal middleware");
+            loggingService.LogInformation<PayPalMiddleware>("Received the request. Validating it now...");
 
             await paypalService.ValidatePaymentAsync(requestBody);
 

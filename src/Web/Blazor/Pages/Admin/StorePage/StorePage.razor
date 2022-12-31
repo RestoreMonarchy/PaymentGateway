@@ -3,18 +3,29 @@
 @using RestoreMonarchy.PaymentGateway.Web.Blazor.Pages.Admin.StorePage.Components;
 @layout AdminLayout
 
-@if (Store != null) 
-{
-    <div class="mb-3 d-flex align-items-center">
-        <div class="">
-            <img src="@Store.LogoUrl" width="40" height="40" class="border" />
-        </div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+        <li class="breadcrumb-item"><a href="/admin/stores">Stores</a></li>
+        @if (Store != null)
+        {
+            <li class="breadcrumb-item active" aria-current="page">
+                <div class="d-flex align-items-center">
+                    <div class="">
+                        <img src="@Store.LogoUrl" width="22" height="22" class="border" />
+                    </div>
 
-        <div class="ms-2 fs-4">
-            @Store.Name
-        </div>
-    </div>
-    
+                    <div class="ms-2">
+                        @Store.Name
+                    </div>
+                </div>
+            </li>    
+        }        
+    </ol>
+</nav>
+
+@if (Store != null) 
+{    
     <div class="row">
         <div class="col-lg-8">
             <div class="box">

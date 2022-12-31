@@ -138,10 +138,7 @@ app.UseAuthentication();
 app.MapControllers();
 app.MapFallbackToPage("/_Host");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapBlazorHub();
-    endpoints.MapDefaultControllerRoute();
-});
+app.MapBlazorHub();
+app.MapDefaultControllerRoute();
 
 app.Run();

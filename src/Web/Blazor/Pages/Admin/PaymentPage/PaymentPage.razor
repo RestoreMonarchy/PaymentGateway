@@ -2,11 +2,19 @@
 @using RestoreMonarchy.PaymentGateway.Web.Blazor.Pages.Admin.PaymentPage.Components
 @layout AdminLayout
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+        <li class="breadcrumb-item"><a href="/admin/payments">Payments</a></li>
+        @if (Payment != null)
+        {
+            <li class="breadcrumb-item active" aria-current="page">@Payment.PublicId</li>
+        }        
+    </ol>
+</nav>
+
 @if (Payment != null)
 {
-    <div class="mb-3 fs-4">
-        Payment #@Payment.Id
-    </div>
     <div class="row">
         <div class="col-lg-6">
             <div class="box">

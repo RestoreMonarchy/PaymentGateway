@@ -108,7 +108,21 @@ builder.Services.AddAuthorization(options =>
     options.DefaultPolicy = authBuilder.Build();
 });
 
-builder.Services.AddHttpClient();
+IHttpClientBuilder httpClientBuilder = builder.Services.AddHttpClient("Default");
+if (builder.Environment.IsDevelopment())
+{
+    httpClientBuilder.ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        return new HttpClientHandler()
+        {
+            // bypass ssl validation in local development environment
+            ServerCertificateCustomValidationCallback = (a, b, c, d) => 
+            {
+                return true;
+            }
+        };
+    });
+}
 builder.Services.AddControllersWithViews();
 
 foreach (IPaymentProviderPlugin plugin in plugins)

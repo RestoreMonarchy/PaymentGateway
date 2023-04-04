@@ -41,7 +41,7 @@ namespace RestoreMonarchy.PaymentGateway.Web.Services
 
         public async Task<bool> SendNotifyAsync(MPayment payment)
         {
-            HttpClient httpClient = httpClientFactory.CreateClient();
+            HttpClient httpClient = httpClientFactory.CreateClient("Default");
             httpClient.DefaultRequestHeaders.Add(PaymentGatewayConstants.NotifyAPIKeyHeader, payment.Store.APIKey.ToString());
             StringContent content = new(payment.PublicId.ToString());
 

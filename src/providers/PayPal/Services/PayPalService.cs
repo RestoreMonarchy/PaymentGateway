@@ -51,21 +51,21 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
 
             string receiver = pwp.Payment.Receiver != null ? pwp.Payment.Receiver : pwp.Parameters.DefaultReceiver;
 
-            if (dict["receiver_email"] != receiver)
+            if (dict["receiver_email"]?.Equals(receiver, StringComparison.OrdinalIgnoreCase) ?? true)
             {
-                loggingService.LogInformation<PayPalService>("The 'receiver_email' property value is not equal to the payment receiver");
+                loggingService.LogInformation<PayPalService>("The 'receiver_email' property value is not equal to the payment {0} receiver", pwp.Payment.PublicId);
                 return;
             }
 
-            if (dict["mc_currency"] != pwp.Payment.Currency)
+            if (dict["mc_currency"]?.Equals(pwp.Payment.Currency, StringComparison.OrdinalIgnoreCase) ?? true)
             {
-                loggingService.LogInformation<PayPalService>("The 'mc_currency' property value is not equal to the payment currency");
+                loggingService.LogInformation<PayPalService>("The 'mc_currency' property value is not equal to the payment {0} currency", pwp.Payment.PublicId);
                 return;
             }
 
             if (decimal.Parse(dict["mc_gross"]) < pwp.Payment.Amount)
             {
-                loggingService.LogInformation<PayPalService>("The 'mc_gross' property value is not smaller than payment amount");
+                loggingService.LogInformation<PayPalService>("The 'mc_gross' property value is not smaller than payment {0} amount", pwp.Payment.PublicId);
                 return;
             }
 
@@ -86,7 +86,7 @@ namespace RestoreMonarchy.PaymentGateway.Providers.PayPal.Services
 
             await paymentService.UpdatePaymentData(publicId, paypalPayment);
             await paymentService.CompletePayment(publicId);
-            loggingService.LogInformation<PayPalService>("The payment was valid and has been completed successfully");
+            loggingService.LogInformation<PayPalService>("The payment {0} was valid and has been completed successfully", pwp.Payment.PublicId);
         }
     }
 }

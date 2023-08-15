@@ -6,5 +6,6 @@
         public const string PayPal = "PayPal";
         public const string Nano = "Nano";
         public const string Mock = "Mock";
+        public const string Bitcoin = "Bitcoin";
     }
 }

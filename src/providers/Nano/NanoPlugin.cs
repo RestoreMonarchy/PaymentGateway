@@ -40,7 +40,6 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Nano
 
         public override void Configure(IApplicationBuilder app, IConfiguration configuration)
         {
-
         }
     }
 }

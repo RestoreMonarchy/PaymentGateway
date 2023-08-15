@@ -6,7 +6,5 @@
 
         public string CoinMarketCapAPIUrl { get; set; }
         public string CoinMarketCapAPIKey { get; set; }
-
-        public decimal TransactionFee { get; set; }
     }
 }

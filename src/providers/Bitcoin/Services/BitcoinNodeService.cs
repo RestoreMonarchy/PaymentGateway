@@ -14,7 +14,6 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Bitcoin.Services
         private Node _connectedNode;
         private FeeRate _feeRate;
         private readonly WaitingBitcoinPaymentStore _paymentStore;
-        private readonly BitcoinPriceService _priceService;
         private readonly IPaymentService _paymentService;
         private readonly BlockCypherClient _blockCypherClient;
         private readonly BitcoinOptions _options;
@@ -23,7 +22,6 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Bitcoin.Services
 
         public BitcoinNodeService(
             WaitingBitcoinPaymentStore paymentStore,
-            BitcoinPriceService priceService,
             IPaymentService paymentService,
             IOptions<BitcoinOptions> options,
             BlockCypherClient blockCypherClient,
@@ -31,7 +29,6 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Bitcoin.Services
             ILogger<BitcoinNodeService> logger)
         {
             _paymentStore = paymentStore;
-            _priceService = priceService;
             _paymentService = paymentService;
             _options = options.Value;
             _blockCypherClient = blockCypherClient;
@@ -125,16 +122,19 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Bitcoin.Services
                     _logger.LogError(ex, "There was an error while working with the block transactions");
                 }
             });
-            message.Message.IfPayloadIs<FeeFilterPayload>(payload =>
+            message.Message.IfPayloadIs<FeeFilterPayload>(async payload =>
             {
-                if (_options.TransactionFee < payload.FeeRate.SatoshiPerByte)
+                var averageFees = await _blockCypherClient.GetAverageFeesAsync();
+
+                if (averageFees.SatoshiPerByte < payload.FeeRate.SatoshiPerByte)
                 {
                     _feeRate = payload.FeeRate;
                 }
                 else
                 {
-                    _feeRate = new FeeRate(_options.TransactionFee);
+                    _feeRate = averageFees;
                 }
+
                 _logger.LogDebug("Fee Rate set to {FeeRate}", _feeRate);
             });
         }

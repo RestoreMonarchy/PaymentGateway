@@ -1,6 +1,7 @@
 ﻿using NBitcoin;
 using RestoreMonarchy.PaymentGateway.Providers.Bitcoin.Models;
 using System.Net.Http.Json;
+using System.Text.Json.Nodes;
 
 namespace RestoreMonarchy.PaymentGateway.Providers.Bitcoin.Clients
 {
@@ -32,6 +33,19 @@ namespace RestoreMonarchy.PaymentGateway.Providers.Bitcoin.Clients
             return receivedTransactions.Where(t => !spentTransactionHashes.Contains(t.Hash))
                 .Select(t => new Coin(uint256.Parse(t.Hash), uint.Parse(t.Index.ToString()), new Money(t.Sats, MoneyUnit.Satoshi), Script.FromHex(t.Script)))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Gets average fees from btc blockchain
+        /// </summary>
+        /// <returns>Expressed in sat/b</returns>
+        public async Task<FeeRate> GetAverageFeesAsync()
+        {
+            using var client = new HttpClient();
+            var response = await client.GetStringAsync("https://api.blockcypher.com/v1/btc/main");
+            var obj = JsonObject.Parse(response);
+            var statoshiPerByte = obj["medium_fee_per_kb"].GetValue<decimal>() / 1000;
+            return new FeeRate(statoshiPerByte);
         }
     }
 }

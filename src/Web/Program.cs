@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Quartz;
 using RestoreMonarchy.PaymentGateway.API.Abstractions;
 using RestoreMonarchy.PaymentGateway.API.Services;
+using RestoreMonarchy.PaymentGateway.Providers.Bitcoin;
 using RestoreMonarchy.PaymentGateway.Providers.Mock;
 using RestoreMonarchy.PaymentGateway.Providers.Nano;
 using RestoreMonarchy.PaymentGateway.Providers.PayPal;
@@ -23,7 +24,7 @@ builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
 
 builder.Services.AddScoped<BlazorUser>();
 
-builder.Services.AddRazorPages((o) => 
+builder.Services.AddRazorPages((o) =>
 {
     o.RootDirectory = "/Blazor/Pages";
 });
@@ -45,7 +46,8 @@ Assembly[] assemblies = new Assembly[]
 {
     typeof(MockPaymentProvider).Assembly,
     typeof(PayPalPaymentProvider).Assembly,
-    typeof(NanoPaymentProvider).Assembly
+    typeof(NanoPaymentProvider).Assembly,
+    typeof(BitcoinPaymentProvider).Assembly
 };
 
 List<IPaymentProviderPlugin> plugins = new List<IPaymentProviderPlugin>();
@@ -77,11 +79,11 @@ builder.Services.AddTransient(typeof(IPaymentService), typeof(PaymentService));
 // Add Quartz services
 builder.Services.AddTransient<PaymentNotifyJob>();
 
-builder.Services.AddQuartz(q => 
+builder.Services.AddQuartz(q =>
 {
     q.SchedulerId = "JobScheduler";
     q.SchedulerName = "Job Scheduler";
-    
+
     q.UseMicrosoftDependencyInjectionJobFactory();
     q.UsePersistentStore(x =>
     {
@@ -89,8 +91,8 @@ builder.Services.AddQuartz(q =>
         x.UseJsonSerializer();
     });
 });
-builder.Services.AddQuartzServer(options => 
-{ 
+builder.Services.AddQuartzServer(options =>
+{
     options.WaitForJobsToComplete = true;
 });
 
@@ -101,7 +103,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/Account/Logout";
     });
 
-builder.Services.AddAuthorization(options => 
+builder.Services.AddAuthorization(options =>
 {
     AuthorizationPolicyBuilder authBuilder = new(CookieAuthenticationDefaults.AuthenticationScheme);
     authBuilder.RequireAuthenticatedUser();
@@ -116,7 +118,7 @@ if (builder.Environment.IsDevelopment())
         return new HttpClientHandler()
         {
             // bypass ssl validation in local development environment
-            ServerCertificateCustomValidationCallback = (a, b, c, d) => 
+            ServerCertificateCustomValidationCallback = (a, b, c, d) =>
             {
                 return true;
             }

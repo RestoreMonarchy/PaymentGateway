@@ -1,0 +1,51 @@
+﻿@inherits JsonDataComponentBase<BitcoinPaymentData>
+
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">
+        <span class="fw-bold">Address: </span>
+        <a target="_blank" href="https://www.blockchain.com/es/explorer/addresses/btc/@Data.ReceiveAddress" class="text-decoration-none">
+            @Data.ReceiveAddress
+        </a>
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Private Key: </span>
+        @if (isShow)
+        {
+            <span>@PrivateKeyHex</span>
+        }
+        else
+        {
+            <a href="javascript:void(0)" @onclick="HandleShow">
+                Show
+            </a>
+        }
+
+    </li>
+    <li class="list-group-item">
+        <span class="fw-bold">Minimum Amount: </span>
+        @Data.MinimumAmount
+    </li>
+    @if (Data.PayerAddress != null)
+    {
+        <li class="list-group-item">
+            <span class="fw-bold">Payer Address: </span>
+            <a target="_blank" href="https://www.blockchain.com/es/explorer/addresses/btc/@Data.PayerAddress" class="text-decoration-none">
+                @Data.PayerAddress
+            </a>
+        </li>
+        <li class="list-group-item">
+            <span class="fw-bold">Paid Amount: </span>
+            @Data.PaidAmount
+        </li>
+        <li class="list-group-item">
+            <span class="fw-bold">Payment Hash: </span>
+            <a target="_blank" href="https://www.blockchain.com/explorer/transactions/btc/@Data.PaymentHash" class="text-decoration-none">
+                @Data.PaymentHash
+            </a>
+        </li>
+        <li class="list-group-item">
+            <span class="fw-bold">Paid Date: </span>
+            @Data.ReceiveDate
+        </li>
+    }
+</ul>
